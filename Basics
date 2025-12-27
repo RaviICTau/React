@@ -1,0 +1,93 @@
+This line: const { login } = useAuth();
+
+is equivalent to:
+const auth = useAuth();
+const login = auth.login;
+
+Why curly brackets {}? - Because this is object destructuring.
+
+You’re saying: “From the object returned by useAuth(), extract the login property and store it in a variable called login.”
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
+
+1.2 What makes a Hook different from a normal function?
+
+A normal function:
+
+function add(a, b) {
+  return a + b;
+}
+
+Runs the same way every time, React doesn’t care when or how you call it
+
+A Hook like useContext:
+
+const value = useContext(AuthContext);
+
+Is tracked by React, Is tied to the component render cycle, Reads from React’s internal memory
+
+Triggers re-renders when values change
+
+👉 React must know exactly when and where it’s called.
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+
+1. What is React Context?
+Simple definition - Context is a way to share data globally across components without passing props manually at every level. It solves prop drilling.
+
+2. The problem Context solves (prop drilling)
+
+Without Context:
+App
+ └─ Layout (needs user)
+     └─ Page
+         └─ Component
+             └─ Button (needs user)
+
+You would need:
+<App user={user}>
+  <Layout user={user}>
+    <Page user={user}>
+      <Component user={user}>
+        <Button user={user} />
+
+3. What Context actually is (important)
+
+Context is not magic. A context is just: A container, With a unique identity, That holds a value
+
+Created by: const MyContext = createContext(defaultValue);
+
+4. The 3 parts of Context (memorize this)
+Every context has: Context object, Provider, Consumer (useContext)
+
+5. Step-by-step with code
+5.1 Create the context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+This: Creates a context “channel”
+Default value = undefined
+
+5.2 Provide the value
+<AuthContext.Provider value={{ user, loading, login, logout }}>
+  {children}
+</AuthContext.Provider>
+
+
+This:Makes the value available To all components below
+
+5.3 Consume the value
+const context = useContext(AuthContext);
+
+This: Reads the current value From the nearest Provider above
+
+6. Why Context is NOT global state
+
+Context: Does not store data itself Just passes data down, The data actually lives in: useState(...), Context only exposes it.
+
+7. What are <> here? In this line:
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+The <> mean: - “Tell TypeScript what type of value this context will hold.”
+
+This context will hold: AuthContextType | undefined, 
+Initially, its value is: undefined
