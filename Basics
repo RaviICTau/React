@@ -91,3 +91,38 @@ The <> mean: - “Tell TypeScript what type of value this context will hold.”
 
 This context will hold: AuthContextType | undefined, 
 Initially, its value is: undefined
+
+//-------------------------------------------------------------------------------------------------------------------------------------------
+Async/Await/Timeout example
+
+Timeout will hold the particular function and procees with rest of the lines.
+Await will hold the function itself till the promise
+
+//Example 
+<!DOCTYPE html>
+<html>
+<body>
+<h1>JavaScript async / await</h1>
+<h2 id="demo"></h2>
+<h2 id="demo2"></h2>
+<p>Wait 3 seconds (3000 milliseconds) for this page to change.</p>
+
+<script>
+async function myDisplay() {
+  let myPromise = new Promise(function(resolve) {
+    setTimeout(function() {resolve("I love You !!");}, 6000);
+  });
+  setTimeout(function() {document.getElementById("demo2").innerHTML = "2000 timeout";}, 2000);
+  document.getElementById("demo2").innerHTML = "Before Await";
+  setTimeout(function() {document.getElementById("demo2").innerHTML = "2nd 2000 timeout";}, 4000);
+  document.getElementById("demo").innerHTML = await myPromise;
+  document.getElementById("demo2").innerHTML = "After Await";
+  setTimeout(function() {document.getElementById("demo2").innerHTML = "3rd 2000 timeout";}, 2000);
+}
+
+myDisplay();
+</script>
+
+</body>
+</html>
+
